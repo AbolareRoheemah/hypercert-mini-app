@@ -32,6 +32,8 @@ import {
   export const SUPPORTED_CHAINS = (
     ENVIRONMENT === "production" ? prodNetChains : testNetChains
   ) as readonly [Chain, ...Chain[]];
+  
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const allChains = [
     ...testNetChains.map((x) => x.id),
     ...prodNetChains.map((x) => x.id),

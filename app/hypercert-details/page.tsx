@@ -7,7 +7,7 @@ import Link from "next/link";
 import { BuyOrderDialog } from "@/app/components/buy-order-dialog";
 import { OrderFragment } from "@/lib/order.fragment";
 import { HypercertFull } from "@/lib/hypercert-full.fragment";
-// import {useRouter} from "next/navigation";
+import { useRouter } from 'next/router';
 import { useToast } from "@/hooks/use-toast";
 import { getHypercert } from "@/lib/getHypercert";
 import { useStore } from "@/lib/account-store";
@@ -19,7 +19,7 @@ export default function HypercertDetails() {
   const emitError = useStore((state: any) => state.error);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const emitHash = useStore((state: any) => state.hash);
-  // const router = useRouter();
+  const router = useRouter();
   const { toast } = useToast();
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<Context.FrameContext>();
@@ -29,7 +29,7 @@ export default function HypercertDetails() {
   // const [cancellingOrderNonce, setCancellingOrderNonce] = useState<string | null>(null);
   // const [unitsToBuy, setUnitsToBuy] = useState<number>(0);
   const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  const { id } = router.query;
   const isProcessing = hypercert?.orders?.data?.length ? hypercert?.orders?.data?.[0]?.orderNonce === activeOrderNonce: false;
   // const isCancelling = hypercert?.orders?.data?.[0].orderNonce === cancellingOrderNonce;
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
@@ -65,12 +65,9 @@ export default function HypercertDetails() {
   }, [emitHash]);
 
   useEffect(() => {
-    const fetchHypercert = async () => {
-      if (!id) {
-        setLoading(false);
-        return;
-      }
+    if (!id) return;
 
+    const fetchHypercert = async () => {
       try {
         const hypercert = await getHypercert(id);
         setHypercert(hypercert as HypercertFull);

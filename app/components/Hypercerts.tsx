@@ -22,7 +22,7 @@ export default function Hypercerts() {
   const [loading, setLoading] = useState(true);
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<Context.FrameContext>();
-  const appUrl = process.env.NEXT_PUBLIC_URL;
+  // const appUrl = process.env.NEXT_PUBLIC_URL;
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [totalCount, setTotalCount] = useState(0);
