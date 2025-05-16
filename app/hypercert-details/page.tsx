@@ -1,37 +1,33 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-// import { useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState, Suspense } from "react";
 import sdk, { type Context } from "@farcaster/frame-sdk";
 import Link from "next/link";
 import { BuyOrderDialog } from "@/app/components/buy-order-dialog";
 import { OrderFragment } from "@/lib/order.fragment";
 import { HypercertFull } from "@/lib/hypercert-full.fragment";
-import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 import { useToast } from "@/hooks/use-toast";
 import { getHypercert } from "@/lib/getHypercert";
 import { useStore } from "@/lib/account-store";
 import { Name, Identity, Avatar, Address, EthBalance } from "@coinbase/onchainkit/identity";
 import { Wallet, ConnectWallet, WalletDropdown, WalletDropdownDisconnect } from '@coinbase/onchainkit/wallet';
 
-export default function HypercertDetails() {
+// This component wraps the content that uses search params
+function HypercertDetailsContent() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const emitError = useStore((state: any) => state.error);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const emitHash = useStore((state: any) => state.hash);
-  const router = useRouter();
   const { toast } = useToast();
   const [isSDKLoaded, setIsSDKLoaded] = useState(false);
   const [context, setContext] = useState<Context.FrameContext>();
   const [hypercert, setHypercert] = useState<HypercertFull | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeOrderNonce, setActiveOrderNonce] = useState<string | null>(null);
-  // const [cancellingOrderNonce, setCancellingOrderNonce] = useState<string | null>(null);
-  // const [unitsToBuy, setUnitsToBuy] = useState<number>(0);
-  // const searchParams = useSearchParams();
-  const { id } = router.query;
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
   const isProcessing = hypercert?.orders?.data?.length ? hypercert?.orders?.data?.[0]?.orderNonce === activeOrderNonce: false;
-  // const isCancelling = hypercert?.orders?.data?.[0].orderNonce === cancellingOrderNonce;
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -84,23 +80,6 @@ export default function HypercertDetails() {
     fetchHypercert();
   }, [id]);
 
-  // useEffect(() => {
-  //   if (hypercert?.orders?.cheapestOrder?.amounts && hypercert.orders.cheapestOrder.amounts.length > 0) {
-  //     setUnitsToBuy(Number(hypercert.orders.cheapestOrder.amounts[0]));
-  //   }
-  // }, [hypercert]);
-
-  // const getMinUnits = () => {
-  //   if (hypercert?.orders?.cheapestOrder?.amounts && hypercert.orders.cheapestOrder.amounts.length > 0) {
-  //     return Number(hypercert.orders.cheapestOrder.amounts[0]);
-  //   }
-  //   return 1;
-  // };
-
-  // const getMaxUnits = () => {
-  //   return hypercert?.orders?.totalUnitsForSale || "0";
-  // };
-
   const handleBuyOrder = useCallback(
     (orderNonce: string) => {
       setActiveOrderNonce(orderNonce);
@@ -116,18 +95,6 @@ export default function HypercertDetails() {
     setActiveOrderNonce(null);
     setShowSuccessModal(true);
   }, []);
-
-  // const calculateTotalPrice = () => {
-  //   if (!hypercert?.orders?.data || hypercert.orders.data.length === 0) {
-  //     return 0;
-  //   }
-    
-  //   const pricePerUnit = selectedCurrency === 'BASE' 
-  //     ? parseFloat(hypercert.orders.data[0].price) 
-  //     : parseFloat(hypercert.orders.data[0].pricePerPercentInUSD);
-    
-  //   return (pricePerUnit * unitsToBuy).toFixed(2);
-  // };
 
   if (loading) {
     return (
@@ -317,66 +284,56 @@ export default function HypercertDetails() {
                 <span className="font-medium">Purchase successful!</span>
               </div>
               
-              {/* Display transaction hash from emitHash */}
-              {/* {(transactionHash || emitHash) && ( */}
-                <div className="mt-4 text-sm">
-                  {/* <p className="text-gray-700 mb-2">Transaction Hash:</p>
-                  <p className="text-gray-500 break-all font-mono text-xs bg-green-100 p-2 rounded">
-                    {transactionHash || emitHash}
-                  </p> */}
-                  <a
-                    href={`https://base.blockscout.com/tx/${transactionHash || emitHash || ""}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-3 inline-flex items-center text-green-600 hover:text-green-800 font-medium"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                      <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                    </svg>
-                    View on Base Explorer
-                  </a>
-                </div>
-              {/* )} */}
-              
-            </div>
-              <div className="mt-4">
-                <Link 
-                  href="/"
-                  className="text-center py-3 text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 flex items-center justify-center"
+              <div className="mt-4 text-sm">
+                <a
+                  href={`https://base.blockscout.com/tx/${transactionHash || emitHash || ""}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-flex items-center text-green-600 hover:text-green-800 font-medium"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                    <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
                   </svg>
-                  Back to Marketplace
-                </Link>
+                  View on Base Explorer
+                </a>
               </div>
+            </div>
+            <div className="mt-4">
+              <Link 
+                href="/"
+                className="text-center py-3 text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 flex items-center justify-center"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+                </svg>
+                Back to Marketplace
+              </Link>
+            </div>
           </div>
         </div>
       )}
-
-      {/* Error Modal */}
-      {/* {errorMessage && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 relative">
-            <button 
-              onClick={() => setErrorMessage(null)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Error</h2>
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6">
-              <div className="flex items-center text-red-700">
-                <span className="font-medium">{errorMessage}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )} */}
     </div>
+  );
+}
+
+// Create a loading fallback component
+function HypercertLoading() {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50">
+      <div className="flex flex-col items-center">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <div className="text-blue-600 text-xl font-medium">Loading hypercert details...</div>
+      </div>
+    </div>
+  );
+}
+
+// Main export component that wraps the content in Suspense
+export default function HypercertDetails() {
+  return (
+    <Suspense fallback={<HypercertLoading />}>
+      <HypercertDetailsContent />
+    </Suspense>
   );
 }
