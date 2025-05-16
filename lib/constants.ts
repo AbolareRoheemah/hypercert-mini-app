@@ -29,21 +29,21 @@ import {
     filecoin,
   ] as const;
   
-  // export const SUPPORTED_CHAINS = (
-  //   ENVIRONMENT === "production" ? prodNetChains : testNetChains
-  // ) as readonly [Chain, ...Chain[]];
-  // const allChains = [
-  //   ...testNetChains.map((x) => x.id),
-  //   ...prodNetChains.map((x) => x.id),
-  // ] as const;
   export const SUPPORTED_CHAINS = (
-    prodNetChains
+    ENVIRONMENT === "production" ? prodNetChains : testNetChains
   ) as readonly [Chain, ...Chain[]];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const allChains = [
     ...testNetChains.map((x) => x.id),
     ...prodNetChains.map((x) => x.id),
   ] as const;
+  // export const SUPPORTED_CHAINS = (
+  //   prodNetChains
+  // ) as readonly [Chain, ...Chain[]];
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const allChains = [
+  //   ...testNetChains.map((x) => x.id),
+  //   ...prodNetChains.map((x) => x.id),
+  // ] as const;
   
   export type SupportedChainIdType = (typeof allChains)[number];
   

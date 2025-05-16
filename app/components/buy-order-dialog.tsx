@@ -42,11 +42,11 @@ export function BuyOrderDialog({
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>{trigger}</DialogTrigger>
-            <DialogContent className="p-6 text-teal-600">
+            <DialogContent className="p-6 text-blue-600">
                 <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-gray-900 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-cyan-600">Buy Hypercert Fraction</DialogTitle>
+                    <DialogTitle className="text-2xl font-bold text-gray-900 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-600">Buy Hypercert Fraction</DialogTitle>
                 </DialogHeader>
-                <DialogDescription className="text-teal-600">Complete your purchase of the Hypercert fraction.</DialogDescription>
+                <DialogDescription className="text-blue-600">Complete your purchase of the Hypercert fraction.</DialogDescription>
                 {isProcessing ? (
                     <div className="flex items-center justify-center p-4">
                         <Loader2 className="h-8 w-8 animate-spin text-blue-500" />

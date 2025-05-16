@@ -234,7 +234,7 @@ export const BuyFractionalOrderForm = ({
           name="percentageAmount"
           render={({ field }) => (
             <FormItem>
-              <h5 className="uppercase text-sm text-teal-600 font-medium tracking-wider">
+              <h5 className="uppercase text-sm text-blue-600 font-medium tracking-wider">
                 How many %?
               </h5>
               <FormControl>
@@ -246,10 +246,10 @@ export const BuyFractionalOrderForm = ({
                       field.onChange(value);
                     }
                   }}
-                  className="border border-teal-500 focus:border-teal-600 focus:ring focus:ring-teal-200"
+                  className="border border-blue-500 focus:border-blue-600 focus:ring focus:ring-blue-200"
                 />
               </FormControl>
-              <div className="text-sm text-teal-600">
+              <div className="text-sm text-blue-600">
                 You will buy{" "}
                 <b>
                   <FormattedUnits>{unitsToBuy.toString()}</FormattedUnits>
@@ -267,7 +267,7 @@ export const BuyFractionalOrderForm = ({
           name="pricePerPercent"
           render={({ field }) => (
             <FormItem>
-              <h5 className="uppercase text-sm text-teal-600 font-medium tracking-wider">
+              <h5 className="uppercase text-sm text-blue-600 font-medium tracking-wider">
                 Price per %
               </h5>
               <FormControl>
@@ -286,10 +286,10 @@ export const BuyFractionalOrderForm = ({
                       );
                     }
                   }}
-                  className="border border-teal-500 focus:border-teal-600 focus:ring focus:ring-teal-200"
+                  className="border border-blue-500 focus:border-blue-600 focus:ring focus:ring-blue-200"
                 />
               </FormControl>
-              <div className="text-sm text-teal-600">
+              <div className="text-sm text-blue-600">
                 You can voluntarily increase the price. (min:{" "}
                 <b>
                   {formattedMinPrice} {currency.symbol}
@@ -301,7 +301,7 @@ export const BuyFractionalOrderForm = ({
           )}
         />
 
-        <Button variant="outline" type="submit" disabled={disabled} className="w-full text-bold text-teal-600 border-teal-600">
+        <Button variant="outline" type="submit" disabled={disabled} className="w-full text-bold text-blue-600 border-blue-600">
           Execute order
         </Button>
       </form>

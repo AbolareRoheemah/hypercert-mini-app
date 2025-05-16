@@ -1,13 +1,15 @@
 "use client"
-import { HypercertClient } from "@hypercerts-org/sdk";
+import { Environment, HypercertClient } from "@hypercerts-org/sdk";
 import { useWalletClient, usePublicClient } from "wagmi";
 import { gql, request } from 'graphql-request';
+
+
+const ENVIRONMENT = process.env.NEXT_PUBLIC_ENVIRONMENT as Environment;
+const graphUrl = ENVIRONMENT === "production" ? "https://api.hypercerts.org/v1/graphql": "https://staging-api.hypercerts.org/v1/graphql";
 
 export const useHypercertClient = () => {
   const { data: walletClient } = useWalletClient();
   const publicClient = usePublicClient();
-  const graphUrl = "https://api.hypercerts.org/v1/graphql";
-  const ENVIRONMENT = "production";
 
   const client = new HypercertClient({
     environment: ENVIRONMENT,
@@ -16,7 +18,7 @@ export const useHypercertClient = () => {
     graphUrl
   });
 
-  console.log("getDeployments", client.getDeployments)
+  console.log("client", client)
 
   return { client };
 };
@@ -43,7 +45,7 @@ const query = gql`
 
 export async function getHypercerts() {
   try {
-    const res = await request("https://api.hypercerts.org/v1/graphql", query);
+    const res = await request(graphUrl, query);
     console.log("Hypercerts:", res);
     return res;
   } catch (error) {

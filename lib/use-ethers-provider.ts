@@ -14,7 +14,7 @@ export function publicClientToProvider(publicClient: PublicClient) {
     ensAddress: chain.contracts?.ensRegistry?.address,
   };
 
-  const rpcUrl = "https://celo-mainnet.g.alchemy.com/v2/4FF6xgfo305aOiFhplzY7M6AaWWZMmg_"; 
+  const rpcUrl = "https://base-mainnet.g.alchemy.com/v2/4FF6xgfo305aOiFhplzY7M6AaWWZMmg_"; 
   return new JsonRpcProvider(rpcUrl, network);
 }
 

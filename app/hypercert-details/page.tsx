@@ -3,17 +3,16 @@
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import sdk, { type Context } from "@farcaster/frame-sdk";
-import { getHypercertById } from "../../lib/graphqlQueries";
 import Link from "next/link";
-import { BuyOrderDialog } from "~/components/buy-order-dialog";
-import { OrderFragment } from "~/lib/order.fragment";
-import { HypercertFull } from "~/lib/hypercert-full.fragment";
+import { BuyOrderDialog } from "@/app/components/buy-order-dialog";
+import { OrderFragment } from "@/lib/order.fragment";
+import { HypercertFull } from "@/lib/hypercert-full.fragment";
 // import {useRouter} from "next/navigation";
-import { useToast } from "~/hooks/use-toast";
-import { getHypercert } from "~/lib/getHypercert";
-import { useStore } from "~/lib/account-store";
+import { useToast } from "@/hooks/use-toast";
+import { getHypercert } from "@/lib/getHypercert";
+import { useStore } from "@/lib/account-store";
 import { Name, Identity, Avatar, Address, EthBalance } from "@coinbase/onchainkit/identity";
-import { Wallet, ConnectWallet, WalletDropdown, WalletDropdownDisconnect } from "@coinbase/onchainkit/wallet";
+import { Wallet, ConnectWallet, WalletDropdown, WalletDropdownDisconnect } from '@coinbase/onchainkit/wallet';
 
 export default function HypercertDetails() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,7 +30,7 @@ export default function HypercertDetails() {
   // const [unitsToBuy, setUnitsToBuy] = useState<number>(0);
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
-  const isProcessing = hypercert?.orders?.data?.length ?? hypercert?.orders?.data?.[0]?.orderNonce === activeOrderNonce;
+  const isProcessing = hypercert?.orders?.data?.length ? hypercert?.orders?.data?.[0]?.orderNonce === activeOrderNonce: false;
   // const isCancelling = hypercert?.orders?.data?.[0].orderNonce === cancellingOrderNonce;
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -123,7 +122,7 @@ export default function HypercertDetails() {
   //     return 0;
   //   }
     
-  //   const pricePerUnit = selectedCurrency === 'CELO' 
+  //   const pricePerUnit = selectedCurrency === 'BASE' 
   //     ? parseFloat(hypercert.orders.data[0].price) 
   //     : parseFloat(hypercert.orders.data[0].pricePerPercentInUSD);
     
@@ -132,10 +131,10 @@ export default function HypercertDetails() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50">
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50">
         <div className="flex flex-col items-center">
-          <div className="w-12 h-12 border-4 border-teal-500 border-t-transparent rounded-full animate-spin mb-4"></div>
-          <div className="text-teal-600 text-xl font-medium">Loading hypercert details...</div>
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <div className="text-blue-600 text-xl font-medium">Loading hypercert details...</div>
         </div>
       </div>
     );
@@ -149,10 +148,10 @@ export default function HypercertDetails() {
         paddingLeft: context?.client.safeAreaInsets?.left ?? 0,
         paddingRight: context?.client.safeAreaInsets?.right ?? 0,
       }}
-      className="min-h-screen bg-gradient-to-br from-teal-50 to-cyan-50 py-8 px-4"
+      className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 py-8 px-4"
     >
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-teal-100 max-h-[93vh]">
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-blue-100 max-h-[93vh]">
           <div className="md:flex items-start">
             <div className="md:w-1/2 relative">
               {hypercert?.metadata?.image ? (
@@ -162,22 +161,22 @@ export default function HypercertDetails() {
                   className="w-full h-full object-contain"
                 />
               ) : (
-                <div className="w-full h-full min-h-[300px] bg-gradient-to-br from-teal-200 to-cyan-200 flex items-center justify-center">
+                <div className="w-full h-full min-h-[300px] bg-gradient-to-br from-blue-200 to-cyan-200 flex items-center justify-center">
                   <span className="text-xl font-bold text-white">Hypercert Image</span>
                 </div>
               )}
               <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
-                <span className="text-teal-700 font-medium text-sm">Celo</span>
+                <span className="text-blue-700 font-medium text-sm">Base</span>
               </div>
             </div>
             <div className="md:w-1/2 p-8 max-h-[90vh] overflow-auto">
               <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-teal-500 to-cyan-600">
+                <h1 className="text-2xl font-bold text-gray-900 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-600">
                   {hypercert?.metadata?.name || "Hypercert Title"}
                 </h1>
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-teal-100 text-teal-800">
-                    ID: {hypercert?.hypercert_id ? `${hypercert.hypercert_id.substring(0, 4)}...${hypercert.hypercert_id.substring(hypercert.hypercert_id.length - 4)}` : id || "Unknown"}
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                    ID: {hypercert?.hypercert_id ? `${hypercert.hypercert_id.substring(0, 4)}...${hypercert.hypercert_id.substring(hypercert.hypercert_id.length - 4)}` : id ? `${id.substring(0, 4)}...${id.substring(id.length - 4)}` : "Unknown"}
                   </span>
                 </div>
                 <p className="text-gray-600 text-md">
@@ -200,18 +199,18 @@ export default function HypercertDetails() {
               
               <div className="border-t border-gray-200 pt-6 mb-6">
                 <h2 className="text-md font-semibold text-gray-800 mb-4">Purchase Fractions</h2>
-                <div className="bg-teal-50 rounded-2xl p-4 mb-6">
+                <div className="bg-blue-50 rounded-2xl p-4 mb-6">
                   <div className="flex items-center justify-between mb-4">
-                    <div className="text-gray-700 font-medium">Price per unit (CELO):</div>
-                    <div className="font-bold text-teal-700">
+                    <div className="text-gray-700 font-medium">Price per unit (BASE):</div>
+                    <div className="font-bold text-blue-700">
                       {hypercert?.orders?.data && hypercert.orders.data.length > 0
-                        ? `${Number(hypercert.orders.data[0].pricePerPercentInToken).toFixed(2)} CELO`
+                        ? `${Number(hypercert.orders.data[0].pricePerPercentInToken).toFixed(2)} BASE`
                         : "Not for sale"}
                     </div>
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-gray-700 font-medium">Price per unit (USD):</div>
-                    <div className="font-bold text-teal-700">
+                    <div className="font-bold text-blue-700">
                       {hypercert?.orders?.data && hypercert.orders.data.length > 0
                         ? `$${Number(hypercert.orders.data[0].pricePerPercentInUSD).toFixed(2)}`
                         : "Not for sale"}
@@ -219,7 +218,7 @@ export default function HypercertDetails() {
                   </div>
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-gray-700 font-medium">Min unit per order:</div>
-                    <div className="font-bold text-teal-700">
+                    <div className="font-bold text-blue-700">
                       {hypercert?.orders?.cheapestOrder
                         ? `${hypercert.orders.cheapestOrder.amounts}`
                         : "Not for sale"}
@@ -227,7 +226,7 @@ export default function HypercertDetails() {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="text-gray-700 font-medium">Available fractions:</div>
-                    <div className="font-bold text-teal-700">
+                    <div className="font-bold text-blue-700">
                       {hypercert?.orders?.totalUnitsForSale 
                         ? `${hypercert.orders.totalUnitsForSale}/${hypercert.units}` 
                         : `0/${hypercert?.units || 0}`}
@@ -236,7 +235,7 @@ export default function HypercertDetails() {
                 </div>
                 
                 <div className="flex flex-col space-y-4">
-                <div className="flex items-center space-x-2">
+                <div className="flex flex-col space-y-3">
                     <Wallet className="z-10">
                         <ConnectWallet>
                         <Name className="text-inherit" />
@@ -251,11 +250,38 @@ export default function HypercertDetails() {
                         <WalletDropdownDisconnect />
                         </WalletDropdown>
                     </Wallet>
-                </div>
-                  
+                    <BuyOrderDialog
+                        order={hypercert?.orders?.data?.[0] as OrderFragment || []}
+                        hypercert={hypercert as HypercertFull}
+                        isProcessing={isProcessing && !errorMessage}
+                        onBuyOrder={handleBuyOrder}
+                        onComplete={handleBuyOrderComplete}
+                        trigger={
+                        <button 
+                            className={`w-full py-3 font-medium rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
+                            hypercert?.orders?.totalUnitsForSale
+                                ? "bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:from-blue-600 hover:to-cyan-700" 
+                                : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                            }`}
+                            disabled={!hypercert?.orders?.totalUnitsForSale}
+                        >
+                            {isProcessing && !errorMessage ? (
+                            <div className="flex items-center justify-center">
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                                Processing...
+                            </div>
+                            ) : hypercert?.orders?.totalUnitsForSale ? (
+                            "Buy Fractions"
+                            ) : (
+                            "Not Available"
+                            )}
+                        </button>
+                        }
+                    />
+                    </div>
                   <Link 
                     href="/"
-                    className="text-center py-3 text-teal-600 hover:text-teal-800 font-medium transition-colors duration-200 flex items-center justify-center"
+                    className="text-center py-3 text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 flex items-center justify-center"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
@@ -299,7 +325,7 @@ export default function HypercertDetails() {
                     {transactionHash || emitHash}
                   </p> */}
                   <a
-                    href={`https://celo.blockscout.com/tx/${transactionHash || emitHash || ""}`}
+                    href={`https://base.blockscout.com/tx/${transactionHash || emitHash || ""}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-3 inline-flex items-center text-green-600 hover:text-green-800 font-medium"
@@ -308,7 +334,7 @@ export default function HypercertDetails() {
                       <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
                       <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
                     </svg>
-                    View on Celo Explorer
+                    View on Base Explorer
                   </a>
                 </div>
               {/* )} */}
@@ -317,7 +343,7 @@ export default function HypercertDetails() {
               <div className="mt-4">
                 <Link 
                   href="/"
-                  className="text-center py-3 text-teal-600 hover:text-teal-800 font-medium transition-colors duration-200 flex items-center justify-center"
+                  className="text-center py-3 text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 flex items-center justify-center"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />

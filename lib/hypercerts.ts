@@ -1,11 +1,12 @@
 import { parseUnits } from "viem";
-// import { CONSTANTS } from "@hypercerts-org/sdk";
-// import { ENVIRONMENT } from "./constants";
+import { CONSTANTS } from "@hypercerts-org/sdk";
+import { ENVIRONMENT } from "./constants";
 
-// const HYPERCERT_API_URL = "https://api.hypercerts.org";
+const HYPERCERT_API_URL =
+  CONSTANTS.ENDPOINTS[ENVIRONMENT as keyof typeof CONSTANTS.ENDPOINTS];
 
-export const HYPERCERTS_API_URL_REST = `https://api.hypercerts.org/v1`;
-export const HYPERCERTS_API_URL_GRAPH = `https://api.hypercerts.org/v1/graphql`;
+export const HYPERCERTS_API_URL_REST = `${HYPERCERT_API_URL}/v1`;
+export const HYPERCERTS_API_URL_GRAPH = `${HYPERCERT_API_URL}/v1/graphql`;
 
 export const DEFAULT_NUM_UNITS_DECIMALS = 8;
 export const DEFAULT_NUM_UNITS = parseUnits("1", DEFAULT_NUM_UNITS_DECIMALS);
