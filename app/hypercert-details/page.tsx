@@ -69,6 +69,9 @@ export default function HypercertDetails() {
 
     const fetchHypercert = async () => {
       try {
+        if (Array.isArray(id)) {
+          throw new Error("Invalid ID: expected a single string, but received an array.");
+        }
         const hypercert = await getHypercert(id);
         setHypercert(hypercert as HypercertFull);
       } catch (error) {
@@ -173,7 +176,7 @@ export default function HypercertDetails() {
                 </h1>
                 <div className="flex items-center gap-2 mb-4">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                    ID: {hypercert?.hypercert_id ? `${hypercert.hypercert_id.substring(0, 4)}...${hypercert.hypercert_id.substring(hypercert.hypercert_id.length - 4)}` : id ? `${id.substring(0, 4)}...${id.substring(id.length - 4)}` : "Unknown"}
+                    ID: {typeof hypercert?.hypercert_id === 'string' ? `${hypercert.hypercert_id.substring(0, 4)}...${hypercert.hypercert_id.substring(hypercert.hypercert_id.length - 4)}` : typeof id === 'string' ? `${id.substring(0, 4)}...${id.substring(id.length - 4)}` : "Unknown"}
                   </span>
                 </div>
                 <p className="text-gray-600 text-md">
