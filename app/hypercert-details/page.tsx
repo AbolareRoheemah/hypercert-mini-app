@@ -115,20 +115,23 @@ function HypercertDetailsContent() {
         paddingLeft: context?.client.safeAreaInsets?.left ?? 0,
         paddingRight: context?.client.safeAreaInsets?.right ?? 0,
       }}
-      className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 py-8 px-4"
+      className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 py-4 px-4"
     >
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-blue-100 max-h-[93vh]">
-          <div className="md:flex items-start">
-            <div className="md:w-1/2 relative">
+        {/* Changed max-height and made the container more responsive */}
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-blue-100">
+          {/* Changed from md:flex to flex-col on mobile and md:flex-row on larger screens */}
+          <div className="flex flex-col md:flex-row">
+            {/* Adjusted image container for better mobile display */}
+            <div className="w-full md:w-1/2 relative">
               {hypercert?.metadata?.image ? (
                 <img
                   src={hypercert.metadata.image}
                   alt={hypercert.metadata.name || ""}
-                  className="w-full h-full object-contain"
+                  className="w-full h-64 md:h-full object-cover md:object-contain"
                 />
               ) : (
-                <div className="w-full h-full min-h-[300px] bg-gradient-to-br from-blue-200 to-cyan-200 flex items-center justify-center">
+                <div className="w-full h-64 md:h-full bg-gradient-to-br from-blue-200 to-cyan-200 flex items-center justify-center">
                   <span className="text-xl font-bold text-white">Hypercert Image</span>
                 </div>
               )}
@@ -136,23 +139,24 @@ function HypercertDetailsContent() {
                 <span className="text-blue-700 font-medium text-sm">Base</span>
               </div>
             </div>
-            <div className="md:w-1/2 p-8 max-h-[90vh] overflow-auto">
-              <div className="mb-6">
-                <h1 className="text-2xl font-bold text-gray-900 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-600">
+            {/* Made content area properly scrollable on mobile */}
+            <div className="w-full md:w-1/2 p-4 md:p-8 overflow-y-auto">
+              <div className="mb-4 md:mb-6">
+                <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-cyan-600">
                   {hypercert?.metadata?.name || "Hypercert Title"}
                 </h1>
-                <div className="flex items-center gap-2 mb-4">
+                <div className="flex items-center gap-2 mb-3 md:mb-4">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                     ID: {typeof hypercert?.hypercert_id === 'string' ? `${hypercert.hypercert_id.substring(0, 4)}...${hypercert.hypercert_id.substring(hypercert.hypercert_id.length - 4)}` : typeof id === 'string' ? `${id.substring(0, 4)}...${id.substring(id.length - 4)}` : "Unknown"}
                   </span>
                 </div>
-                <p className="text-gray-600 text-md">
+                <p className="text-gray-600 text-sm md:text-md">
                   {hypercert?.metadata?.description || "This hypercert represents a unique contribution to a public good. Own a fraction to support the creator and their work."}
                 </p>
               </div>
               
               {hypercert?.metadata?.work_scope && (
-                <div className="mb-6">
+                <div className="mb-4 md:mb-6">
                   <h2 className="text-md font-semibold text-gray-800 mb-2">Work Scope</h2>
                   <p className="text-gray-600">
                     {typeof hypercert.metadata.work_scope === 'string' 
@@ -164,36 +168,36 @@ function HypercertDetailsContent() {
                 </div>
               )}
               
-              <div className="border-t border-gray-200 pt-6 mb-6">
-                <h2 className="text-md font-semibold text-gray-800 mb-4">Purchase Fractions</h2>
-                <div className="bg-blue-50 rounded-2xl p-4 mb-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-gray-700 font-medium">Price per unit (BASE):</div>
-                    <div className="font-bold text-blue-700">
+              <div className="border-t border-gray-200 pt-4 md:pt-6 mb-4 md:mb-6">
+                <h2 className="text-md font-semibold text-gray-800 mb-3 md:mb-4">Purchase Fractions</h2>
+                <div className="bg-blue-50 rounded-2xl p-3 md:p-4 mb-4 md:mb-6">
+                  <div className="flex items-center justify-between mb-3 md:mb-4">
+                    <div className="text-sm md:text-base text-gray-700 font-medium">Price per unit (BASE):</div>
+                    <div className="font-bold text-blue-700 text-sm md:text-base">
                       {hypercert?.orders?.data && hypercert.orders.data.length > 0
                         ? `${Number(hypercert.orders.data[0].pricePerPercentInToken).toFixed(2)} BASE`
                         : "Not for sale"}
                     </div>
                   </div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-gray-700 font-medium">Price per unit (USD):</div>
-                    <div className="font-bold text-blue-700">
+                  <div className="flex items-center justify-between mb-3 md:mb-4">
+                    <div className="text-sm md:text-base text-gray-700 font-medium">Price per unit (USD):</div>
+                    <div className="font-bold text-blue-700 text-sm md:text-base">
                       {hypercert?.orders?.data && hypercert.orders.data.length > 0
                         ? `$${Number(hypercert.orders.data[0].pricePerPercentInUSD).toFixed(2)}`
                         : "Not for sale"}
                     </div>
                   </div>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-gray-700 font-medium">Min unit per order:</div>
-                    <div className="font-bold text-blue-700">
+                  <div className="flex items-center justify-between mb-3 md:mb-4">
+                    <div className="text-sm md:text-base text-gray-700 font-medium">Min unit per order:</div>
+                    <div className="font-bold text-blue-700 text-sm md:text-base">
                       {hypercert?.orders?.cheapestOrder
                         ? `${hypercert.orders.cheapestOrder.amounts}`
                         : "Not for sale"}
                     </div>
                   </div>
                   <div className="flex items-center justify-between">
-                    <div className="text-gray-700 font-medium">Available fractions:</div>
-                    <div className="font-bold text-blue-700">
+                    <div className="text-sm md:text-base text-gray-700 font-medium">Available fractions:</div>
+                    <div className="font-bold text-blue-700 text-sm md:text-base">
                       {hypercert?.orders?.totalUnitsForSale 
                         ? `${hypercert.orders.totalUnitsForSale}/${hypercert.units}` 
                         : `0/${hypercert?.units || 0}`}
@@ -202,50 +206,50 @@ function HypercertDetailsContent() {
                 </div>
                 
                 <div className="flex flex-col space-y-4">
-                <div className="flex flex-col space-y-3">
+                  <div className="flex flex-col space-y-3">
                     <Wallet className="z-10">
-                        <ConnectWallet>
+                      <ConnectWallet>
                         <Name className="text-inherit" />
-                        </ConnectWallet>
-                        <WalletDropdown>
+                      </ConnectWallet>
+                      <WalletDropdown>
                         <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
-                            <Avatar />
-                            <Name />
-                            <Address />
-                            <EthBalance />
+                          <Avatar />
+                          <Name />
+                          <Address />
+                          <EthBalance />
                         </Identity>
                         <WalletDropdownDisconnect />
-                        </WalletDropdown>
+                      </WalletDropdown>
                     </Wallet>
                     <BuyOrderDialog
-                        order={hypercert?.orders?.data?.[0] as OrderFragment || []}
-                        hypercert={hypercert as HypercertFull}
-                        isProcessing={isProcessing && !errorMessage}
-                        onBuyOrder={handleBuyOrder}
-                        onComplete={handleBuyOrderComplete}
-                        trigger={
+                      order={hypercert?.orders?.data?.[0] as OrderFragment || []}
+                      hypercert={hypercert as HypercertFull}
+                      isProcessing={isProcessing && !errorMessage}
+                      onBuyOrder={handleBuyOrder}
+                      onComplete={handleBuyOrderComplete}
+                      trigger={
                         <button 
-                            className={`w-full py-3 font-medium rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
+                          className={`w-full py-3 font-medium rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ${
                             hypercert?.orders?.totalUnitsForSale
-                                ? "bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:from-blue-600 hover:to-cyan-700" 
-                                : "bg-gray-300 text-gray-600 cursor-not-allowed"
-                            }`}
-                            disabled={!hypercert?.orders?.totalUnitsForSale}
+                              ? "bg-gradient-to-r from-blue-500 to-cyan-600 text-white hover:from-blue-600 hover:to-cyan-700" 
+                              : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                          }`}
+                          disabled={!hypercert?.orders?.totalUnitsForSale}
                         >
-                            {isProcessing && !errorMessage ? (
+                          {isProcessing && !errorMessage ? (
                             <div className="flex items-center justify-center">
-                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                                Processing...
+                              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                              Processing...
                             </div>
-                            ) : hypercert?.orders?.totalUnitsForSale ? (
+                          ) : hypercert?.orders?.totalUnitsForSale ? (
                             "Buy Fractions"
-                            ) : (
+                          ) : (
                             "Not Available"
-                            )}
+                          )}
                         </button>
-                        }
+                      }
                     />
-                    </div>
+                  </div>
                   <Link 
                     href="/"
                     className="text-center py-3 text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200 flex items-center justify-center"
