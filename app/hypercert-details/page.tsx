@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+// import { useSearchParams } from "next/navigation";
 import sdk, { type Context } from "@farcaster/frame-sdk";
 import Link from "next/link";
 import { BuyOrderDialog } from "@/app/components/buy-order-dialog";
@@ -28,7 +28,7 @@ export default function HypercertDetails() {
   const [activeOrderNonce, setActiveOrderNonce] = useState<string | null>(null);
   // const [cancellingOrderNonce, setCancellingOrderNonce] = useState<string | null>(null);
   // const [unitsToBuy, setUnitsToBuy] = useState<number>(0);
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
   const { id } = router.query;
   const isProcessing = hypercert?.orders?.data?.length ? hypercert?.orders?.data?.[0]?.orderNonce === activeOrderNonce: false;
   // const isCancelling = hypercert?.orders?.data?.[0].orderNonce === cancellingOrderNonce;
