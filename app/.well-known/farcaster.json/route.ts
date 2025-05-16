@@ -2,6 +2,11 @@ export async function GET() {
   const URL = process.env.NEXT_PUBLIC_URL;
 
   return Response.json({
+    "accountAssociation": {
+      "header": "eyJmaWQiOjEwMjQ1MjMsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHhjMTkwMjRCQzREQmI4Mjk3RjA2NzRhMmZBNTlkMEI0NDZBY0FCMTNhIn0",
+      "payload": "eyJkb21haW4iOiJoeXBlcmNlcnQtbWluaS1hcHAudmVyY2VsLmFwcCJ9",
+      "signature": "MHgxODQxMzAyYjY4ZDQyODFmODAwMmRjZWZlZWFkMGJmNjRmMjE0MGQxYjAyY2ZhMDM5MWJiZGY5MDUyODFjOTBkMTAzYzA1MmE2MDQ2NDE1ZGIwNzk4YmNhMjIxYjY5ZDBhYWRkZDRkNzcyMDQwMDY3MGU0Nzc0ZGQwM2JlMjQyNjFj"
+    },
     frame: {
       version: "1",
       name: "Hypercerts Mini App",
