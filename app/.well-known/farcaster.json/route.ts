@@ -4,15 +4,15 @@ export async function GET() {
   return Response.json({
     frame: {
       version: "1",
-      name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
-      subtitle: process.env.NEXT_PUBLIC_APP_SUBTITLE,
-      description: process.env.NEXT_PUBLIC_APP_DESCRIPTION,
-      iconUrl: process.env.NEXT_PUBLIC_APP_ICON,
-      splashImageUrl: process.env.NEXT_PUBLIC_APP_SPLASH_IMAGE,
-      splashBackgroundColor: process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR,
+      name: "Hypercerts Mini App",
+      subtitle: "Hypercerts Marketplace",
+      description: "Discover and manage your hypercerts seamlessly with our intuitive platform.",
+      iconUrl: `${URL}/icon.png`,
+      splashImageUrl: `${URL}/base-logo-in-blue.jpg`,
+      splashBackgroundColor: "#0000FF",
       homeUrl: URL,
       webhookUrl: `${URL}/api/webhook`,
-      heroImageUrl: process.env.NEXT_PUBLIC_APP_HERO_IMAGE
+      heroImageUrl: `${URL}/base-logo-in-blue.jpg`
     },
   });
 }
